@@ -1,0 +1,38 @@
+{
+  "name": "opencode-message-transformer",
+  "version": "0.1.0",
+  "description": "OpenCode plugin that transforms user messages with LLMs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "engines": {
+    "bun": ">=1.0.0"
+  },
+  "keywords": ["opencode", "opencode-plugin", "plugin", "llm", "translation", "message"],
+  "license": "MIT",
+  "peerDependencies": {
+    "@opencode-ai/plugin": ">=1.0.0"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "latest",
+    "@ai-sdk/google": "latest",
+    "@ai-sdk/openai": "latest",
+    "ai": "latest",
+    "jsonc-parser": "^3.3.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.4",
+    "@types/bun": "latest",
+    "@types/node": "^22",
+    "typescript": "^5"
+  },
+  "scripts": {
+    "test": "bun test ./src/transformer.test.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "format:check": "biome check .",
+    "format:fix": "biome check --write .",
+    "prepublishOnly": "bun run build"
+  },
+  "files": ["dist", "schema", "README.md", "LICENSE"]
+}

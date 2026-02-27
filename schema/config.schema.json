@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/Jei-sKappa/opencode-message-transformer/main/schema/config.schema.json",
+  "title": "OpenCode Message Transformer Config",
+  "description": "Configuration for opencode-message-transformer plugin",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "logging": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "debug": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable plugin debug logging"
+        }
+      }
+    },
+    "transformers": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "translate": {
+          "$ref": "#/$defs/translateTransformer"
+        },
+        "improve": {
+          "$ref": "#/$defs/improveTransformer"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "provider": {
+      "type": "string",
+      "enum": ["openai", "anthropic", "google", "openrouter"],
+      "description": "LLM provider"
+    },
+    "triggerMode": {
+      "type": "string",
+      "enum": ["auto", "manual"],
+      "description": "Transformer trigger mode"
+    },
+    "baseTransformer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable or disable transformer"
+        },
+        "mode": {
+          "$ref": "#/$defs/triggerMode"
+        },
+        "trigger": {
+          "type": "string",
+          "description": "Manual mode command prefix"
+        },
+        "provider": {
+          "$ref": "#/$defs/provider"
+        },
+        "model": {
+          "type": "string",
+          "description": "Provider model name"
+        },
+        "temperature": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2,
+          "description": "Sampling temperature"
+        },
+        "systemPrompt": {
+          "type": "string",
+          "description": "System prompt used for this transformer"
+        }
+      },
+      "required": ["enabled", "mode", "trigger", "provider", "model", "temperature", "systemPrompt"]
+    },
+    "translateTransformer": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/baseTransformer"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "default": true
+            },
+            "mode": {
+              "default": "auto"
+            },
+            "trigger": {
+              "default": "!translate"
+            },
+            "provider": {
+              "default": "openai"
+            },
+            "model": {
+              "default": "gpt-4o-mini"
+            },
+            "temperature": {
+              "default": 0.3
+            },
+            "systemPrompt": {
+              "default": "You are a translator. Translate the following user message to {{targetLanguage}}. Return ONLY the translated text, no explanations. If already in {{targetLanguage}}, return unchanged."
+            },
+            "targetLanguage": {
+              "type": "string",
+              "default": "English",
+              "description": "Target language for translation"
+            }
+          },
+          "required": ["targetLanguage"]
+        }
+      ]
+    },
+    "improveTransformer": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/baseTransformer"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "default": false
+            },
+            "mode": {
+              "default": "manual"
+            },
+            "trigger": {
+              "default": "!improve"
+            },
+            "provider": {
+              "default": "openai"
+            },
+            "model": {
+              "default": "gpt-4o-mini"
+            },
+            "temperature": {
+              "default": 0.5
+            },
+            "systemPrompt": {
+              "default": "You are a writing assistant. Improve the following message to be clearer, more concise, and better structured. Maintain the original intent and technical accuracy. Return ONLY the improved text."
+            }
+          }
+        }
+      ]
+    }
+  }
+}

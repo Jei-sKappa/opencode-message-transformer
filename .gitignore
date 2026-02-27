@@ -1,3 +1,17 @@
-# Custom
+# Dependencies
+node_modules/
 
-temp
+# Build output
+dist/
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
+
+# Local scratch
+temp/
+
+# Environment variables
+.env
