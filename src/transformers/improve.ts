@@ -35,14 +35,11 @@ export function createImproveTransformer(config: ImproveTransformerConfig) {
         transformerName: "improve",
       };
     } catch (error) {
-      logger.warn("Improve transformer failed, using original text", {
-        error: error instanceof Error ? error.message : String(error),
-      });
-
       return {
         transformed: false,
         text,
         transformerName: "improve",
+        error: error instanceof Error ? error.message : String(error),
       };
     }
   };

@@ -39,14 +39,11 @@ export function createTranslateTransformer(config: TranslateTransformerConfig) {
         transformerName: "translate",
       };
     } catch (error) {
-      logger.warn("Translate transformer failed, using original text", {
-        error: error instanceof Error ? error.message : String(error),
-      });
-
       return {
         transformed: false,
         text,
         transformerName: "translate",
+        error: error instanceof Error ? error.message : String(error),
       };
     }
   };

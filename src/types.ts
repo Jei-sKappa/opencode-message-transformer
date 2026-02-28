@@ -32,4 +32,5 @@ export interface TransformResult {
   transformed: boolean;
   text: string;
   transformerName: "translate" | "improve";
+  error?: string;
 }

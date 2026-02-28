@@ -97,6 +97,12 @@ export function createPipeline(
 
         if (step.name === "translate") {
           const result = await translate(text);
+          if (result.error) {
+            logger.warn("Translate transformer failed, preserving original message.", {
+              error: result.error,
+            });
+            return inputText;
+          }
           text = result.text;
           logger.debug("Translate transformer processed message", {
             transformed: result.transformed,
@@ -106,6 +112,12 @@ export function createPipeline(
         }
 
         const result = await improve(text);
+        if (result.error) {
+          logger.warn("Improve transformer failed, preserving original message.", {
+            error: result.error,
+          });
+          return inputText;
+        }
         text = result.text;
         logger.debug("Improve transformer processed message", {
           transformed: result.transformed,

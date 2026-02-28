@@ -126,4 +126,29 @@ describe("transformer pipeline", () => {
     expect(result).toBe("improved(translated(hola))");
     expect(calls).toEqual(["translate:hola", "improve:translated(hola)"]);
   });
+
+  it("preserves original input when a transformer fails", async () => {
+    const config = createConfig();
+    config.transformers.translate.mode = "manual";
+    config.transformers.improve.enabled = false;
+
+    const calls: string[] = [];
+    const pipeline = createPipeline(config, {
+      translate: async (text) => {
+        calls.push(`translate:${text}`);
+        return {
+          transformed: false,
+          text,
+          transformerName: "translate",
+          error: "test error",
+        };
+      },
+    });
+
+    const input = "!translate ciao";
+    const result = await pipeline.process(input);
+
+    expect(result).toBe(input);
+    expect(calls).toEqual(["translate:ciao"]);
+  });
 });
