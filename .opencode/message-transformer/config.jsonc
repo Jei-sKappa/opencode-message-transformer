@@ -9,8 +9,8 @@
       "mode": "manual",
       "trigger": "!translate",
       "targetLanguage": "English",
-      "provider": "openai",
-      "model": "gpt-4o-mini",
+      "provider": "openrouter",
+      "model": "openai/gpt-oss-120b",
       "temperature": 0.3,
       "systemPrompt": "You are a translator. Translate the following user message to {{targetLanguage}}. Return ONLY the translated text, no explanations. If already in {{targetLanguage}}, return unchanged."
     },
@@ -18,8 +18,8 @@
       "enabled": true,
       "mode": "manual",
       "trigger": "!improve",
-      "provider": "openai",
-      "model": "gpt-4o-mini",
+      "provider": "openrouter",
+      "model": "openai/gpt-oss-120b",
       "temperature": 0.5,
       "systemPrompt": "You are a writing assistant. Improve the following message to be clearer, more concise, and better structured. Maintain the original intent and technical accuracy. Return ONLY the improved text."
     }
